@@ -52,3 +52,9 @@ This repository contains documentation and architecture only. All API keys, toke
 ## License
 
 MIT
+
+## Screenshots
+
+### Dashboard
+![Urban AI Dashboard](./urban-ai-coordination-platform/urban-ai-dashboard.png)
+
