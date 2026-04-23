@@ -35,7 +35,6 @@ A multi-agent AI system on IBM watsonx Orchestrate. A supervisor agent cross-ref
 - IBM Cloud IAM
 - 511 SF Bay Open Data API
 - Google Maps Platform
-- Lovable (frontend)
 - Custom domain with HTTPS
 
 ## Responsible AI
