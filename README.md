@@ -56,5 +56,4 @@ MIT
 ## Screenshots
 
 ### Dashboard
-![Urban AI Dashboard](./urban-ai-coordination-platform/urban-ai-dashboard.png)
-
+![Urban AI Dashboard](assets/urban-ai-dashboard.png)
