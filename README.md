@@ -1,59 +1,116 @@
 # Urban AI Coordination Platform
 
-Multi-agent AI platform that turns fragmented live traffic signals into one coordinated decision for SF professional drivers and dispatchers.
+**Multi-agent decision support for deadline-aware urban mobility and dispatch coordination.**
 
 🔗 **Live demo:** [sfurbanai.online](https://sfurbanai.online)  
-🎥 **Video (3 min):** [YouTube](https://www.youtube.com/watch?v=B06OKqli_w4)  
-🏆 **Built for:** IBM SkillsBuild Agentic AI Experiential Learning Lab 2026  
-👥 **Team:** Qudyan · **Track:** Government & Public Services
+🎥 **3-minute demo:** [YouTube](https://www.youtube.com/watch?v=B06OKqli_w4)  
+🏆 **Program:** IBM SkillsBuild Agentic AI Experiential Learning Lab 2026  
+👥 **Team:** Qudyan  
+🎯 **Track:** Government & Public Services
 
 ---
 
-## The Problem
+## Executive Summary
 
-Professional drivers in San Francisco juggle 3+ disconnected tools: Google Maps for traffic, 511 for incidents, SMS for dispatch, and 911 for emergencies. No tool gives them one coordinated decision. Maps are reactive — they turn red only after a driver is already late.
+Professional drivers and dispatchers in San Francisco often work across disconnected systems for traffic, incidents, routing, dispatch communication, and emergency escalation.
 
-## The Solution
+This project explores a different approach: a **multi-agent AI coordination layer** that combines live transportation signals and policy rules into one structured, auditable recommendation.
 
-A multi-agent AI system on IBM watsonx Orchestrate. A supervisor agent cross-references live 511 SF Bay data with Google Maps real-time traffic, applies the SF Transit Safety Policy, and returns one auditable decision with recommended departure time, risk level, main cause, confidence score, and traceable 511 evidence IDs. For emergencies, a specialist agent produces a structured dispatch brief for human operators.
+The goal is not to replace dispatchers or emergency services. It is to help human operators make faster, more consistent decisions from fragmented information.
 
-## Architecture
+## Problem
 
-**Supervisor + Specialist multi-agent pattern:**
-- **TransitSafetyAgent** (supervisor) — routes all queries, calls live tools, returns decisions
-- **OperatorHandoffAgent** (specialist) — triggered on severity 5, confidence < 0.7, or mandatory escalation
+A professional driver may need to check several sources at once:
 
-**Live integrations:**
-- 511 SF Bay Open Data (CHP + Caltrans)
-- Google Maps Geocoding, Directions, Places Autocomplete
-- IBM Cloud IAM authentication
-- SF Transit Safety Policy knowledge grounding
+- Google Maps for routing and traffic
+- 511 SF Bay for roadway incidents
+- dispatch messages for job requirements
+- emergency procedures for high-severity situations
 
-## Tech Stack
+These systems provide information, but they do not necessarily produce one coordinated decision that accounts for deadline risk, incident severity, confidence, and escalation rules.
 
-- IBM watsonx Orchestrate (multi-agent platform)
-- IBM Cloud IAM
-- 511 SF Bay Open Data API
-- Google Maps Platform
-- Custom domain with HTTPS
+## Solution
 
-## Responsible AI
+The platform uses **IBM watsonx Orchestrate** with a supervisor/specialist multi-agent pattern.
 
-- Every decision cites source 511 incident IDs
-- Confidence < 0.7 or severity 5 triggers mandatory human escalation
-- Agent does NOT autonomously contact 911 (human-in-the-loop by design, compliance with California Penal Code 148.3)
-- Full audit trail on every tool call via Orchestrate reasoning traces
-- No API keys or credentials stored in this repository
+The supervisor agent cross-references live transportation data and policy guidance, then returns a decision containing:
+
+- recommended departure timing
+- risk level
+- primary cause
+- confidence score
+- supporting 511 incident IDs
+- escalation status when human review is required
+
+For high-risk situations, a specialist agent prepares a structured handoff for a human operator.
+
+## Multi-Agent Architecture
+
+### TransitSafetyAgent — Supervisor
+
+Responsible for:
+
+- receiving the user or dispatcher request
+- calling live data tools
+- evaluating traffic and incident context
+- applying safety-policy rules
+- producing the final recommendation
+- routing high-risk cases to the specialist agent
+
+### OperatorHandoffAgent — Specialist
+
+Triggered when:
+
+- incident severity reaches **5**
+- confidence falls below **0.70**
+- policy requires mandatory escalation
+
+Its role is to organize the situation for human review rather than autonomously take emergency action.
+
+## Data & Integrations
+
+- **511 SF Bay Open Data** — CHP and Caltrans incident information
+- **Google Maps Platform** — geocoding, directions, and place autocomplete
+- **IBM Cloud IAM** — authentication
+- **SF Transit Safety Policy** — knowledge grounding and escalation rules
+
+## Responsible AI Design
+
+- Recommendations cite supporting 511 incident IDs.
+- Low-confidence and severe cases trigger escalation.
+- The system does **not** autonomously contact 911.
+- Human operators remain responsible for emergency escalation.
+- Orchestrate reasoning traces provide an audit trail for tool activity.
+- Credentials are not stored in this public repository.
+
+## What This Project Demonstrates
+
+- Agentic AI orchestration
+- Supervisor/specialist agent design
+- Live external-data integration
+- Confidence-based escalation
+- Human-in-the-loop decision support
+- Responsible AI controls
+- Explainable operational recommendations
+
+## Technology
+
+**IBM watsonx Orchestrate · IBM Cloud IAM · 511 SF Bay Open Data API · Google Maps Platform**
+
+## Repository Scope
+
+This is a **portfolio and architecture repository** for the IBM SkillsBuild project. The live agent implementation runs through IBM watsonx Orchestrate and connected services; credentials and private configuration are intentionally excluded from source control.
+
+## Screenshot
+
+### Decision-Support Dashboard
+
+![Urban AI Dashboard](assets/urban-ai-dashboard.png)
 
 ## Security
 
-This repository contains documentation and architecture only. All API keys, tokens, and credentials are stored in secure backend environment variables on the hosting platform, never in source code.
+API keys, access tokens, and credentials are stored in secure environment configuration and are not committed to this repository.
 
 ## License
 
 MIT
-
-## Screenshots
-
-### Dashboard
-![Urban AI Dashboard](assets/urban-ai-dashboard.png)
